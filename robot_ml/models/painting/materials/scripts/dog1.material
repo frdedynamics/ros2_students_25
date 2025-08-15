@@ -1,0 +1,13 @@
+material dogs/1
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture dog1.png
+            }
+        }
+    }
+}

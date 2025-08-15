@@ -1,0 +1,159 @@
+<?xml version="1.0" ?>
+
+<robot name="xacro_macros" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="inertial_box" params="length width height density:=1 *origin_inertial">
+    <xacro:property name="mass" value="${length*height*width*density}" />
+    <inertial>
+      <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+        <xacro:insert_block name="origin_inertial" />
+        <mass value="${mass}"/>
+        <inertia
+          ixx="${mass*(pow(height,2) + pow(width,2))/12}" ixy="0.0" ixz="0.0"
+          iyy="${mass*(pow(length,2) + pow(height,2))/12}" iyz="0.0"
+          izz="${mass*(pow(length,2) + pow(width,2))/12}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="inertial_cylinder" params="radius length density:=1 *origin_inertial">
+    <xacro:property name="mass" value="${pi*length*pow(radius,2)*density}" />
+    <inertial>
+      <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+      <xacro:insert_block name="origin_inertial" />
+      <mass value="${mass}"/>
+      <inertia
+        ixx="${mass*(3*pow(radius,2)+pow(length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${mass*(3*pow(radius,2)+pow(length,2))/12}" iyz="0.0"
+        izz="${mass*pow(radius,2)/2}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="inertial_sphere" params="radius density:=1 *origin_inertial">
+    <xacro:property name="mass" value="${(4/3)*pi*pow(radius,3)}" />
+    <inertial>
+      <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+      <xacro:insert_block name="origin_inertial" />
+      <mass value="${mass}"/>
+      <inertia
+        ixx="${2*mass*pow(radius,2)/5}" ixy="0.0" ixz="0.0"
+        iyy="${2*mass*pow(radius,2)/5}" iyz="0.0"
+        izz="${2*mass*pow(radius,2)/5}"/>
+    </inertial>
+  </xacro:macro >
+  
+  <xacro:macro name="link_box" params="link_name length width height density:=1 mesh_name:='nofile' *origin_vis *origin_col *origin_inertial">
+    <xacro:property name="mass" value="${length*height*width*density}" />
+    <link name="${link_name}">
+      <visual>
+        <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+        <xacro:insert_block name="origin_vis" />
+        <geometry>
+          <xacro:if value="${mesh_name == 'nofile'}">
+            <box size="${length} ${width} ${height}"/>
+          </xacro:if>
+          <xacro:unless value="${mesh_name == 'nofile'}">
+            <mesh filename="${mesh_name}" />
+          </xacro:unless>
+        </geometry>
+      </visual>
+      <collision>
+        <!-- <origin xyz="0 0 0.0" rpy="0 0 0"/> -->
+        <xacro:insert_block name="origin_col" />
+        <geometry>
+          <!-- <box size="${length} ${width} ${height}"/> -->
+          <xacro:if value="${mesh_name == 'nofile'}">
+            <box size="${length} ${width} ${height}"/>
+          </xacro:if>
+          <xacro:unless value="${mesh_name == 'nofile'}">
+            <mesh filename="${mesh_name}" />
+          </xacro:unless>
+        </geometry>
+      </collision>
+      <inertial>
+        <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+        <xacro:insert_block name="origin_inertial" />
+        <mass value="${mass}"/>
+        <inertia
+          ixx="${mass*(pow(height,2) + pow(width,2))/12}" ixy="0.0" ixz="0.0"
+          iyy="${mass*(pow(length,2) + pow(height,2))/12}" iyz="0.0"
+          izz="${mass*(pow(length,2) + pow(width,2))/12}"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="link_cylinder" params="link_name radius length density:=1 mesh_name:='nofile' *origin_vis *origin_col *origin_inertial">
+    <xacro:property name="mass" value="${pi*length*pow(radius,2)*density}" />
+    <link name="${link_name}">
+      <visual>
+        <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+        <xacro:insert_block name="origin_vis" />
+        <geometry>
+          <xacro:if value="${mesh_name == 'nofile'}">
+            <cylinder length="${length}" radius="${radius}"/>
+          </xacro:if>
+          <xacro:unless value="${mesh_name == 'nofile'}">
+            <mesh filename="${mesh_name}" />
+          </xacro:unless>
+        </geometry>
+      </visual>
+      <collision>
+        <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+        <xacro:insert_block name="origin_col" />
+        <geometry>
+          <!-- <cylinder length="${length}" radius="${radius}"/> -->
+          <xacro:if value="${mesh_name == 'nofile'}">
+            <cylinder length="${length}" radius="${radius}"/>
+          </xacro:if>
+          <xacro:unless value="${mesh_name == 'nofile'}">
+            <mesh filename="${mesh_name}" />
+          </xacro:unless>
+        </geometry>
+      </collision>
+      <inertial>
+        <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+        <xacro:insert_block name="origin_inertial" />
+        <mass value="${mass}"/>
+        <inertia
+          ixx="${mass*(3*pow(radius,2)+pow(length,2))/12}" ixy="0.0" ixz="0.0"
+          iyy="${mass*(3*pow(radius,2)+pow(length,2))/12}" iyz="0.0"
+          izz="${mass*pow(radius,2)/2}"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="link_sphere" params="link_name radius density:=1 mesh_name:='nofile' *origin_vis *origin_col *origin_inertial">
+    <xacro:property name="mass" value="${(4/3)*pi*pow(radius,3)}" />
+    <link name="${link_name}">
+      <visual>
+        <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+        <xacro:insert_block name="origin_vis" />
+        <geometry>
+          <xacro:if value="${mesh_name == 'nofile'}">
+            <sphere radius="${radius}"/>
+          </xacro:if>
+          <xacro:unless value="${mesh_name == 'nofile'}">
+            <mesh filename="${mesh_name}" />
+          </xacro:unless>
+        </geometry>
+      </visual>
+      <collision>
+        <!-- <origin xyz="0 0 0.0" rpy="0 0 0"/> -->
+        <xacro:insert_block name="origin_col" />
+        <geometry>
+          <sphere radius="${radius}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+        <xacro:insert_block name="origin_inertial" />
+        <mass value="${mass}"/>
+        <inertia
+          ixx="${2*mass*pow(radius,2)/5}" ixy="0.0" ixz="0.0"
+          iyy="${2*mass*pow(radius,2)/5}" iyz="0.0"
+          izz="${2*mass*pow(radius,2)/5}"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+
+
+</robot>

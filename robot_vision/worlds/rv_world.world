@@ -1,0 +1,771 @@
+<sdf version='1.6'>
+  <world name='default'>
+<!--     <light name='sun' type='directional'>
+      <cast_shadows>true</cast_shadows>
+      <pose frame=''>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light> -->
+    <model name='ground_plane'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>1</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <!-- Spheres -->
+  <model name="static_sphere_1">
+    <static>true</static>
+    <link name="sphere_link_1">
+      <pose>1 3 0.3 0 0 0</pose>
+      <visual name="visual_1">
+        <geometry>
+          <sphere>
+            <radius>0.1</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>1 0 0 1</ambient> <!-- Red -->
+        </material>
+      </visual>
+      <collision name="collision_1">
+        <geometry>
+          <sphere>
+            <radius>0.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+
+  <!-- Sphere 2 -->
+  <model name="static_sphere_2">
+    <static>true</static>
+    <link name="sphere_link_2">
+      <pose>-0.5 12 0.7 0 0 0</pose>
+      <visual name="visual_2">
+        <geometry>
+          <sphere>
+            <radius>0.2</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>0 1 0 1</ambient> <!-- Green -->
+        </material>
+      </visual>
+      <collision name="collision_2">
+        <geometry>
+          <sphere>
+            <radius>0.2</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+
+  <!-- Sphere 3 -->
+  <model name="static_sphere_3">
+    <static>true</static>
+    <link name="sphere_link_3">
+      <pose>2 9 0.4 0 0 0</pose>
+      <visual name="visual_3">
+        <geometry>
+          <sphere>
+            <radius>0.3</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>0 0 1 1</ambient> <!-- Blue -->
+        </material>
+      </visual>
+      <collision name="collision_3">
+        <geometry>
+          <sphere>
+            <radius>0.3</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+
+  <!-- Sphere 4 -->
+  <model name="static_sphere_4">
+    <static>true</static>
+    <link name="sphere_link_4">
+      <pose>-1.5 1 0.8 0 0 0</pose>
+      <visual name="visual_4">
+        <geometry>
+          <sphere>
+            <radius>0.4</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>1 1 0 1</ambient> <!-- Yellow -->
+        </material>
+      </visual>
+      <collision name="collision_4">
+        <geometry>
+          <sphere>
+            <radius>0.4</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+
+  <!-- Sphere 5 -->
+  <model name="static_sphere_5">
+    <static>true</static>
+    <link name="sphere_link_5">
+      <pose>0.5 6 0.25 0 0 0</pose>
+      <visual name="visual_5">
+        <geometry>
+          <sphere>
+            <radius>0.05</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>1 0 1 1</ambient> <!-- Magenta -->
+        </material>
+      </visual>
+      <collision name="collision_5">
+        <geometry>
+          <sphere>
+            <radius>0.05</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+  
+  <!-- Sphere 6 -->
+  <model name="static_sphere_6">
+    <static>true</static>
+    <link name="sphere_link_6">
+      <pose>1.5 8 0.65 0 0 0</pose>
+      <visual name="visual_6">
+        <geometry>
+          <sphere>
+            <radius>0.35</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>0 1 1 1</ambient> <!-- Cyan -->
+        </material>
+      </visual>
+      <collision name="collision_6">
+        <geometry>
+          <sphere>
+            <radius>0.35</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+  
+  <!-- Sphere 7 -->
+  <model name="static_sphere_7">
+    <static>true</static>
+    <link name="sphere_link_7">
+      <pose>-0.8 11 0.45 0 0 0</pose>
+      <visual name="visual_7">
+        <geometry>
+          <sphere>
+            <radius>0.15</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>0.5 0.5 0.5 1</ambient> <!-- Grey -->
+        </material>
+      </visual>
+      <collision name="collision_7">
+        <geometry>
+          <sphere>
+            <radius>0.15</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+  
+  <!-- Sphere 8 -->
+  <model name="static_sphere_8">
+    <static>true</static>
+    <link name="sphere_link_8">
+      <pose>3 2 0.55 0 0 0</pose>
+      <visual name="visual_8">
+        <geometry>
+          <sphere>
+            <radius>0.25</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>0.5 1 0.5 1</ambient> <!-- Light Green -->
+        </material>
+      </visual>
+      <collision name="collision_8">
+        <geometry>
+          <sphere>
+            <radius>0.25</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+  
+  <!-- Sphere 9 -->
+  <model name="static_sphere_9">
+    <static>true</static>
+    <link name="sphere_link_9">
+      <pose>-1.2 10 0.65 0 0 0</pose>
+      <visual name="visual_9">
+        <geometry>
+          <sphere>
+            <radius>0.4</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>1 0.5 0 1</ambient> <!-- Orange -->
+        </material>
+      </visual>
+      <collision name="collision_9">
+        <geometry>
+          <sphere>
+            <radius>0.4</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+  
+  <!-- Sphere 10 -->
+  <model name="static_sphere_10">
+    <static>true</static>
+    <link name="sphere_link_10">
+      <pose>2.2 6 0.5 0 0 0</pose>
+      <visual name="visual_10">
+        <geometry>
+          <sphere>
+            <radius>0.05</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>0.5 0 1 1</ambient> <!-- Purple -->
+        </material>
+      </visual>
+      <collision name="collision_10">
+        <geometry>
+          <sphere>
+            <radius>0.05</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+  
+  <!-- Sphere 11 -->
+  <model name="static_sphere_11">
+    <static>true</static>
+    <link name="sphere_link_11">
+      <pose>4 12 0.75 0 0 0</pose>
+      <visual name="visual_11">
+        <geometry>
+          <sphere>
+            <radius>0.45</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>1 0.2 0.2 1</ambient> <!-- Light Red -->
+        </material>
+      </visual>
+      <collision name="collision_11">
+        <geometry>
+          <sphere>
+            <radius>0.45</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+  
+  <!-- Sphere 12 -->
+  <model name="static_sphere_12">
+    <static>true</static>
+    <link name="sphere_link_12">
+      <pose>-2 5 0.4 0 0 0</pose>
+      <visual name="visual_12">
+        <geometry>
+          <sphere>
+            <radius>0.35</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>0 0.2 1 1</ambient> <!-- Light Blue -->
+        </material>
+      </visual>
+      <collision name="collision_12">
+        <geometry>
+          <sphere>
+            <radius>0.35</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+  
+  <!-- Sphere 13 -->
+  <model name="static_sphere_13">
+    <static>true</static>
+    <link name="sphere_link_13">
+      <pose>0 9 0.45 0 0 0</pose>
+      <visual name="visual_13">
+        <geometry>
+          <sphere>
+            <radius>0.15</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>0 0.9 0 1</ambient> <!-- Neon Green -->
+        </material>
+      </visual>
+      <collision name="collision_13">
+        <geometry>
+          <sphere>
+            <radius>0.15</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+  
+  <!-- Sphere 14 -->
+  <model name="static_sphere_14">
+    <static>true</static>
+    <link name="sphere_link_14">
+      <pose>1.8 11 0.7 0 0 0</pose>
+      <visual name="visual_14">
+        <geometry>
+          <sphere>
+            <radius>0.5</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>1 1 1 1</ambient> <!-- White -->
+        </material>
+      </visual>
+      <collision name="collision_14">
+        <geometry>
+          <sphere>
+            <radius>0.5</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+  
+  <!-- Sphere 15 -->
+  <model name="static_sphere_15">
+    <static>true</static>
+    <link name="sphere_link_15">
+      <pose>-1 6 0.55 0 0 0</pose>
+      <visual name="visual_15">
+        <geometry>
+          <sphere>
+            <radius>0.3</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient> <!-- Dark Grey -->
+        </material>
+      </visual>
+      <collision name="collision_15">
+        <geometry>
+          <sphere>
+            <radius>0.3</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+
+<!-- Sphere 1 -->
+<model name="half_circle_sphere_1">
+  <static>true</static>
+  <pose>-12 0 0.05 0 0 0</pose> <!-- Radius 12, center at (0, 0) -->
+  <link name="half_circle_sphere_link_1">
+    <visual name="half_circle_sphere_visual_1">
+      <geometry>
+        <sphere>
+          <radius>0.05</radius> <!-- Size of the sphere -->
+        </sphere>
+      </geometry>
+      <material>
+        <ambient>1 0 0 1</ambient>  <!-- Red color -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<!-- Sphere 2 -->
+<model name="half_circle_sphere_2">
+  <static>true</static>
+  <pose>-9.66 5 0.15 0 0 0</pose> <!-- adjusted for the position -->
+  <link name="half_circle_sphere_link_2">
+    <visual name="half_circle_sphere_visual_2">
+      <geometry>
+        <sphere>
+          <radius>0.15</radius> <!-- Size of the sphere -->
+        </sphere>
+      </geometry>
+      <material>
+        <ambient>0 1 0 1</ambient>  <!-- Green color -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<!-- Sphere 3 -->
+<model name="half_circle_sphere_3">
+  <static>true</static>
+  <pose>-6 8 0.2 0 0 0</pose> <!-- adjusted for the position -->
+  <link name="half_circle_sphere_link_3">
+    <visual name="half_circle_sphere_visual_3">
+      <geometry>
+        <sphere>
+          <radius>0.2</radius> <!-- Size of the sphere -->
+        </sphere>
+      </geometry>
+      <material>
+        <ambient>0 0 1 1</ambient>  <!-- Blue color -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<!-- Sphere 4 -->
+<model name="half_circle_sphere_4">
+  <static>true</static>
+  <pose>-1 11 0.25 0 0 0</pose> <!-- adjusted for the position -->
+  <link name="half_circle_sphere_link_4">
+    <visual name="half_circle_sphere_visual_4">
+      <geometry>
+        <sphere>
+          <radius>0.25</radius> <!-- Size of the sphere -->
+        </sphere>
+      </geometry>
+      <material>
+        <ambient>1 1 0 1</ambient>  <!-- Yellow color -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<!-- Sphere 5 -->
+<model name="half_circle_sphere_5">
+  <static>true</static>
+  <pose>4 12 0.18 0 0 0</pose> <!-- adjusted for the position -->
+  <link name="half_circle_sphere_link_5">
+    <visual name="half_circle_sphere_visual_5">
+      <geometry>
+        <sphere>
+          <radius>0.18</radius> <!-- Size of the sphere -->
+        </sphere>
+      </geometry>
+      <material>
+        <ambient>1 0 1 1</ambient>  <!-- Magenta color -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<!-- Sphere 6 -->
+<model name="half_circle_sphere_6">
+  <static>true</static>
+  <pose>9 10.4 0.22 0 0 0</pose> <!-- adjusted for the position -->
+  <link name="half_circle_sphere_link_6">
+    <visual name="half_circle_sphere_visual_6">
+      <geometry>
+        <sphere>
+          <radius>0.22</radius> <!-- Size of the sphere -->
+        </sphere>
+      </geometry>
+      <material>
+        <ambient>0 1 1 1</ambient>  <!-- Cyan color -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<!-- Sphere 7 -->
+<model name="half_circle_sphere_7">
+  <static>true</static>
+  <pose>12 8 0.13 0 0 0</pose> <!-- adjusted for the position -->
+  <link name="half_circle_sphere_link_7">
+    <visual name="half_circle_sphere_visual_7">
+      <geometry>
+        <sphere>
+          <radius>0.13</radius> <!-- Size of the sphere -->
+        </sphere>
+      </geometry>
+      <material>
+        <ambient>0.5 0 0.5 1</ambient>  <!-- Purple color -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<!-- Sphere 8 -->
+<model name="half_circle_sphere_8">
+  <static>true</static>
+  <pose>12.66 5 0.2 0 0 0</pose> <!-- adjusted for the position -->
+  <link name="half_circle_sphere_link_8">
+    <visual name="half_circle_sphere_visual_8">
+      <geometry>
+        <sphere>
+          <radius>0.2</radius> <!-- Size of the sphere -->
+        </sphere>
+      </geometry>
+      <material>
+        <ambient>1 0.5 0 1</ambient>  <!-- Orange color -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<!-- Weak Sun Light -->
+<model name="weak_sun">
+  <static>true</static>
+  <link name="sun_light_link">
+    <pose>0 0 100 0 0 0</pose> <!-- Position high up in the scene -->
+    <light type="directional" name="sun_light">
+      <diffuse>0.7 0.7 0.7 1</diffuse> <!-- Weak light color -->
+      <specular>0.15 0.15 0.15 1</specular>
+      <attenuation>
+        <range>1000</range> <!-- Large range to cover the whole scene -->
+        <constant>1.0</constant>
+        <linear>0.001</linear>
+        <quadratic>0.0001</quadratic>
+      </attenuation>
+      <direction>-1 -1 -1</direction> <!-- Direction of sunlight -->
+    </light>
+  </link>
+</model>
+
+ <!-- Spot Light 1 -->
+<model name="spot_light_1">
+  <static>true</static>
+  <link name="spot_light_link_1">
+    <pose>0 0 2 0 0 0</pose>
+    <light type="spot" name="spot_light_1">
+      <pose>0 0 2 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>0 0 -1</direction>
+      <spot>
+        <inner_angle>1.0</inner_angle> <!-- Increased inner angle -->
+        <outer_angle>1.5</outer_angle> <!-- Increased outer angle -->
+        <falloff>0.2</falloff>
+      </spot>
+    </light>
+  </link>
+</model>
+
+<!-- Spot Light 2 -->
+<model name="spot_light_2">
+  <static>true</static>
+  <link name="spot_light_link_2">
+    <pose>1 5 2 0 0 0</pose>
+    <light type="spot" name="spot_light_2">
+      <pose>0 0 2 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>0 0 -1</direction>
+      <spot>
+        <inner_angle>1.0</inner_angle> <!-- Increased inner angle -->
+        <outer_angle>1.5</outer_angle> <!-- Increased outer angle -->
+        <falloff>0.2</falloff>
+      </spot>
+    </light>
+  </link>
+</model>
+
+<!-- Spot Light 3 -->
+<model name="spot_light_3">
+  <static>true</static>
+  <link name="spot_light_link_3">
+    <pose>2 10 2 0 0 0</pose>
+    <light type="spot" name="spot_light_3">
+      <pose>0 0 2 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>0 0 -1</direction>
+      <spot>
+        <inner_angle>1.0</inner_angle> <!-- Increased inner angle -->
+        <outer_angle>1.5</outer_angle> <!-- Increased outer angle -->
+        <falloff>0.2</falloff>
+      </spot>
+    </light>
+  </link>
+</model>
+
+
+
+
+<!-- Left Goal Post -->
+<model name="goal_left_post">
+  <static>true</static>
+  <pose>3.85 14.75 0.5 0 0 0</pose> <!-- Position the left goal post -->
+  <link name="goal_left_post_link">
+    <visual name="goal_left_post_visual">
+      <geometry>
+        <cylinder>
+          <radius>0.1</radius> <!-- Width of the cylinder -->
+          <length>2</length> <!-- Height of the cylinder -->
+        </cylinder>
+      </geometry>
+      <material>
+        <ambient>0 0 0 1</ambient> <!-- White Color -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<!-- Right Goal Post -->
+<model name="goal_right_post">
+  <static>true</static>
+  <pose>4.85 12.75 0.5 0 0 0</pose> <!-- Position the right goal post -->
+  <link name="goal_right_post_link">
+    <visual name="goal_right_post_visual">
+      <geometry>
+        <cylinder>
+          <radius>0.1</radius> <!-- Width of the cylinder -->
+          <length>2</length> <!-- Height of the cylinder -->
+        </cylinder>
+      </geometry>
+      <material>
+        <ambient>0 0 0 1</ambient> <!-- White Color -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <physics name='default_physics' default='0' type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <audio>
+      <device>default</device>
+    </audio>
+    <wind/>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+
+    <state world_name='default'>
+      <sim_time>0 0</sim_time>
+      <real_time>0 0</real_time>
+      <wall_time>1633018246 759882185</wall_time>
+      <iterations>0</iterations>
+      <model name='ground_plane'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose frame=''>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>1.23784 -5.95567 29.4892 -0 1.3618 1.58419</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+  </world>
+</sdf>

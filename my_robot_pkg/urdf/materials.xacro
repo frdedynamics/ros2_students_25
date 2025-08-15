@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot>
+
+    <material name="green">
+        <color rgba="0 1 0 1"/>
+    </material>
+
+    <material name="brown">
+        <color rgba="${222/255} ${207/255} ${195/255} 1.0"/>
+    </material>
+
+
+    <!-- Material -->
+    <gazebo reference="chassis">
+        <material>Gazebo/Orange</material>
+    </gazebo>
+
+    <gazebo reference="left_wheel">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+
+    <gazebo reference="right_wheel">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+
+</robot>

@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<robot name="moving_sphere" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Define the world link -->
+  <link name="world"/>
+  
+  <!-- Link for the sphere -->
+  <link name="sphere_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.1"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+
+  <!-- Joint to allow the sphere to roll -->
+  <joint name="base_joint" type="planar">
+    <parent link="world"/>
+    <child link="sphere_link"/>
+    <origin xyz="0 0 0.22" rpy="0 0 0"/>
+  </joint>
+
+  <gazebo reference="sphere_link">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <!-- Plugin for ROS control -->
+  <gazebo>
+    <plugin name="sphere_controller" filename="libgazebo_ros_planar_move.so">
+      <ros>
+        <namespace>/moving_sphere</namespace>
+        <remapping>cmd_vel:=cmd_vel</remapping>
+        <remapping>odom:=sphere_odom</remapping>
+      </ros>
+      <update_rate>100</update_rate>
+      <!-- Set odom publish rate -->
+      <publish_rate>10</publish_rate>
+      <publish_odom>true</publish_odom>
+      <odom_frame>sphere_link</odom_frame>
+      <robot_base_frame>world</robot_base_frame>
+      <covariance_x>0.0001</covariance_x>
+      <covariance_y>0.0001</covariance_y>
+      <covariance_yaw>0.01</covariance_yaw>
+    </plugin>
+  </gazebo>
+
+</robot>

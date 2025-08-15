@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="painting">
+    <static>true</static>
+    <link name="link">
+      <pose>0 0 0.5 0 0 0</pose>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>1 0.001 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script> 
+            <uri>/home/rocotics/ros2_ws/src/robot_ml/models/painting/materials/scripts</uri>
+	     <uri>/home/rocotics/ros2_ws/src/robot_ml/models/painting/materials/textures</uri>
+            <name>cats/Image</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,69 @@
+<?xml version='1.0'?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- This part tells the ros2 controller what to actuate, how to actuate-->
+    <ros2_control name="GazeboSystem" type="system">
+        <hardware>
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </hardware>
+        <joint name="left_wheel_hinge">
+            <command_interface name="velocity"/>
+            <state_interface name="velocity"/>
+            <state_interface name="position"/>
+        </joint>
+        <joint name="right_wheel_hinge">
+            <command_interface name="velocity"/>
+            <state_interface name="velocity"/>
+            <state_interface name="position"/>
+        </joint>
+    </ros2_control>
+
+    <!-- This part tells Gazebo to use ros2_control-->
+    <gazebo>
+        <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so"> <!-- This is different in ROS1. Here we load config via xacro but we used to do it via launch file in ROS1 -->
+            <parameters>$(find my_robot_pkg)/config/my_controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
+
+    <!--link : https://www.raspberrypi.org/documentation/hardware/camera/-->
+  <gazebo reference="camera_rgb_frame">
+    <sensor name="camera" type="camera">
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>30</update_rate>
+        <camera name="picam">
+          <horizontal_fov>1.085595</horizontal_fov>
+          <image>
+              <width>640</width>
+              <height>480</height>
+              <format>R8G8B8</format>
+          </image>
+          <clip>
+              <near>0.03</near>
+              <far>100</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise is sampled independently per pixel on each frame.
+                  That pixel's noise value is added to each of its color
+                  channels, which at that point lie in the range [0,1]. -->
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+          <plugin name="camera_driver" filename="libgazebo_ros_camera.so">
+            <ros>
+              <!-- <namespace>test_cam</namespace> -->
+              <!-- <remapping>image_raw:=image_demo</remapping> -->
+              <!-- <remapping>camera_info:=camera_info_demo</remapping> -->
+            </ros>
+            <!-- camera_name>omit so it defaults to sensor name</camera_name-->
+            <!-- frame_name>omit so it defaults to link name</frameName-->
+            <!-- <hack_baseline>0.07</hack_baseline> -->
+          </plugin>
+      </sensor>
+    </gazebo>
+
+
+</robot>
