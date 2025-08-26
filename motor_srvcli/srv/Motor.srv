@@ -1,0 +1,3 @@
+int64 goal_pos
+---
+bool complete_flag
