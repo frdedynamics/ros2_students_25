@@ -32,7 +32,9 @@ class CustomDXL:
 
         # Initialize GroupSyncRead instace for Present Position
         self.groupSyncRead = dxl.GroupSyncRead(self.portHandler, self.packetHandler, self.addr_goal_position, self.len_goal_position)
-
+    
+    def getIDs(self):
+      return self.dxl_ids
 
     def open_port(self):
         #######################################################
