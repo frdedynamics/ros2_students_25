@@ -1,9 +1,8 @@
-from custom_dxl.CustomDXL import CustomDXL
+from custom_dxl.CustomDXL_2025 import CustomDXL
 import time
-# creating object for Square class
-object_dxls = CustomDXL()
-object_dxls.open_port()
-object_dxls.send_goal_all_joints(goal=[1000, 2665])
-time.sleep(2)
-object_dxls.send_goal_single_joint(0,2200)
-object_dxls.read_pos()
+object_dxl = CustomDXL(dxl_ids=[0,4])
+object_dxl.open_port()
+time.sleep(1)
+object_dxl.send_goal([500, 500])
+time.sleep(1)
+object_dxl.send_goal([2500, 2500])
