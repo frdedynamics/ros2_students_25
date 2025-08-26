@@ -63,16 +63,17 @@ class CustomDXL:
                 quit()
             else:
                 print("Dynamixel has been successfully connected")
-    def send_goal(self, goal_pos):
-        ########################
-        # Sending goal positions
-        ########################
+
+
         # Add parameter storage for present position value
         for id in self.dxl_ids:
+            self.groupSyncRead.clearParam()
             dxl_addparam_result = self.groupSyncRead.addParam(id)
             if dxl_addparam_result != True:
                 print("[ID:%03d] groupSyncRead addparam failed" % id)
                 quit()
+
+    def send_goal(self, goal_pos):
 
         goal_positions = utils.to4bytes(goal_pos) # Convert to 4 byte array
 
@@ -124,52 +125,105 @@ class CustomDXL:
         # Clear syncwrite parameter storage
         self.groupSyncWrite.clearParam()
 
+    # def read_motor_positions(self):
+    #     """
+    #     Reads the current present position of all configured Dynamixel motors.
+    #     Returns:
+    #         list: A list of integer present positions for each motor,
+    #               or None if there was a communication error.
+    #     """
+    #     present_positions = []
+
+    #     # Clear previous parameters before adding new ones for reading
+    #     self.groupSyncRead.clearParam()
+
+    #     # Add parameter storage for present position value for each motor
+    #     for id in self.dxl_ids:
+    #         dxl_addparam_result = self.groupSyncRead.addParam(id)
+    #         if dxl_addparam_result != True:
+    #             print("[ID:%03d] groupSyncRead addparam failed" % id)
+    #             return None # Indicate failure to add all parameters
+
+    #     # Syncread present position
+    #     dxl_comm_result = self.groupSyncRead.txRxPacket()
+    #     if dxl_comm_result != dxl.COMM_SUCCESS:
+    #         print("%s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+    #         return None
+        
+    #     # Get data from GroupSyncRead parameter storage
+    #     for id in self.dxl_ids:
+    #         # After a successful txRxPacket, data should be available.
+    #         # No need for a separate 'is' check here.
+    #         present_position = self.groupSyncRead.getData(id, self.addr_present_position, self.len_present_position)
+    #         present_positions.append(present_position)
+        
+    #     # Clear syncread parameter storage after reading
+    #     self.groupSyncRead.clearParam()
+        
+    #     return present_positions
+
+    def read_motor_positions(self):
+        """
+        TODO: Doesn't return correct values
+        """
+        present_positions = []
+
+        # Clear previous parameters before adding new ones for reading
+        self.groupSyncRead.clearParam()
+        print("Cleared groupSyncRead parameters.")
+
+        # Add parameter storage for present position value for each motor
+        for id in self.dxl_ids:
+            dxl_addparam_result = self.groupSyncRead.addParam(id)
+            if dxl_addparam_result != True:
+                print("[ID:%03d] groupSyncRead addparam failed" % id)
+                return None # Indicate failure to add all parameters
+            print(f"Added ID:{id} to groupSyncRead parameters.")
 
 
-    def read_pos(self, goal_pos):
-        #########################
-        # Reading servo positions
-        #########################
-        while 1:
-            # Syncread present position
-            dxl_comm_result = self.groupSyncRead.txRxPacket()
-            if dxl_comm_result != dxl.COMM_SUCCESS:
-                print("%s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+        # Syncread present position
+        print("Attempting to read positions from motors...")
+        dxl_comm_result = self.groupSyncRead.txRxPacket()
+        if dxl_comm_result != dxl.COMM_SUCCESS:
+            print("Error: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+            # Also check for packet errors even if comm result is success for more detailed info
+            dxl_error = self.packetHandler.getLastRxPacketError(self.portHandler.getPortNum())
+            if dxl_error != 0:
+                 print("Packet Error: %s" % self.packetHandler.getRxPacketError(dxl_error))
+            return None
+        else:
+            print("GroupSyncRead txRxPacket successful.")
+        
+        # Get data from GroupSyncRead parameter storage
+        for id in self.dxl_ids:
+            # Check if groupSyncRead data is available for the current motor ID
+            if self.groupSyncRead.isAvailable(id, self.addr_present_position, self.len_present_position):
+                present_position = self.groupSyncRead.getData(id, self.addr_present_position, self.len_present_position)
+                present_positions.append(present_position)
+                print(f"ID:{id} - Present Position: {present_position}")
+            else:
+                print(f"[ID:{id}] groupSyncRead data not available for present position.")
+                # If data isn't available for one motor, we can either return None
+                # or append a placeholder (e.g., -1) and continue.
+                # For now, returning None if any read fails.
+                return None
+        
+        # Clear syncread parameter storage after reading
+        self.groupSyncRead.clearParam()
+        print("Cleared groupSyncRead parameters after reading.")
+        
+        return present_positions
 
-            # Check if groupsyncread data of Dynamixel#1 is available
-            for id in self.dxl_ids:
-                dxl_getdata_result = self.groupSyncRead.isAvailable(id, self.addr_present_position, self.len_present_position)
-                if dxl_getdata_result != True:
-                    print("[ID:%03d] groupSyncRead getdata failed" % id)
-                    quit()
 
-            
-            # Get Dynamixel#1 present position value
-            i=0
-            dxl_present_position = np.array([])
-            for id in self.dxl_ids:
-                dxl_present_position = np.append(dxl_present_position, self.groupSyncRead.getData(id, self.addr_present_position, self.len_present_position))
-                print("[ID:%03d] GoalPos:%03d  PresPos:%03d\t" % (id, goal_pos[i], dxl_present_position[-1]), end="")
-                i = i + 1
-            print("")
-
-            if ((abs(goal_pos - dxl_present_position) < self.dxl_moving_status_threshold).all()):
-                break
+    
 
 
 if __name__ == "__main__":
-    object_dxl = CustomDXL()
+    object_dxl = CustomDXL(dxl_ids=[0,4])
     object_dxl.open_port()
-    object_dxl.send_goal(goal_pos=[2100])
     time.sleep(1)
-    # object_dxl.clear_param()
+    object_dxl.send_goal([500, 500])
     time.sleep(1)
-    object_dxl.send_single_goal(motor_order=0, goal_pos=[100])
-    time.sleep(1)
-    object_dxl.send_single_goal(motor_order=0, goal_pos=[300])
-    time.sleep(1)
-    object_dxl.send_single_goal(motor_order=0, goal_pos=[800])
-    time.sleep(1)
-    object_dxl.send_single_goal(motor_order=0, goal_pos=[1100])
-    time.sleep(1)
-    object_dxl.send_single_goal(motor_order=0, goal_pos=[1700])
+    object_dxl.send_goal([2500, 2500])
+    
+    
