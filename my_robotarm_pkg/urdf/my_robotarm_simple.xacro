@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot name="two_dof_robot">
+
+  <link name="base_link">
+  </link>
+
+  <link name="link1">
+    <visual>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.03" length="0.10"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="link2">
+    <visual>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.10"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- Joint 1: Connects base_link to link1 -->
+  <joint name="joint1" type="revolute">
+    <axis xyz="0 0 1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="link1"/>
+    <limit lower="-3.14" upper="3.14" effort="10" velocity="1"/>
+  </joint>
+
+  <!-- Joint 2: Connects link1 to link2 but careful (z = 0.10) since link1 length is 0.10-->
+  <joint name="joint2" type="revolute">
+    <axis xyz="1 0 0"/>
+    <origin xyz="0 0 0.10" rpy="0 0 0"/>
+    <parent link="link1"/>
+    <child link="link2"/>
+    <limit lower="-1.57" upper="1.57" effort="10" velocity="1"/>
+  </joint>
+
+</robot>

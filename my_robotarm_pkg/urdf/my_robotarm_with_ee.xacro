@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<robot name="two_dof_robot">
+
+  <!-- Color Definitions -->
+  <material name="red">
+    <color rgba="0.2 0.2 0.2 1.0"/>
+  </material>
+  
+  <material name="orange">
+    <color rgba="1.0 0.5 0.0 1.0"/>
+  </material>
+
+  <material name="teal">
+    <color rgba="0.0 0.7 0.7 1.0"/>
+  </material>
+
+  <material name="bright_green">
+    <color rgba="0.0 0.8 0.3 1.0"/>
+  </material>
+
+  <!-- Base Link (No visual) -->
+  <link name="base_link"/>
+
+  <!-- Link 1 -->
+  <link name="link1">
+    <visual>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.03" length="0.10"/>
+      </geometry>
+      <material name="dark_grey"/>
+    </visual>
+  </link>
+
+  <!-- Link 2 -->
+  <link name="link2">
+    <visual>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.10"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+  </link>
+
+  <!-- Fixed Left Finger -->
+  <link name="left_finger_link">
+    <visual>
+      <origin xyz="0 0 0.02" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.008 0.008 0.04"/>
+      </geometry>
+      <material name="teal"/>
+    </visual>
+  </link>
+
+  <!-- Moving Right Finger -->
+  <link name="right_finger_link">
+    <visual>
+      <origin xyz="0 0 0.02" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.008 0.008 0.04"/>
+      </geometry>
+      <material name="bright_green"/>
+    </visual>
+  </link>
+
+  <!-- Joint 1: Revolute around Z-axis -->
+  <joint name="joint1" type="revolute">
+    <axis xyz="0 0 1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="link1"/>
+    <limit lower="-3.14" upper="3.14" effort="10" velocity="1"/>
+  </joint>
+
+  <!-- Joint 2: Revolute around X-axis -->
+  <joint name="joint2" type="revolute">
+    <axis xyz="1 0 0"/>
+    <origin xyz="0 0 0.10" rpy="0 0 0"/>
+    <parent link="link1"/>
+    <child link="link2"/>
+    <limit lower="-1.57" upper="1.57" effort="10" velocity="1"/>
+  </joint>
+
+  <!-- Fixed Joint: Attaches the left finger to link2 offset by y = -0.005 -->
+  <joint name="left_finger_joint" type="prismatic">
+    <axis xyz="0 -1 0"/>
+    <origin xyz="0 -0.005 0.10" rpy="0 0 0"/>
+    <parent link="link2"/>
+    <child link="left_finger_link"/>
+    <limit lower="0.0" upper="0.03" effort="5" velocity="0.5"/>
+  </joint>
+
+  <!-- Prismatic Joint: Moves the right finger along Y-axis from y = +0.005 outwards -->
+  <joint name="right_finger_joint" type="prismatic">
+    <axis xyz="0 1 0"/>
+    <origin xyz="0 0.005 0.10" rpy="0 0 0"/>
+    <parent link="link2"/>
+    <child link="right_finger_link"/>
+    <limit lower="0.0" upper="0.03" effort="5" velocity="0.5"/>
+  </joint>
+
+</robot>
