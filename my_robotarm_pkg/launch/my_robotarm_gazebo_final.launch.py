@@ -14,7 +14,7 @@ def generate_launch_description():
     package_path = get_package_share_directory(package_name)
 
     # This is our robot. If you change the xacro file to another one without inertia and collision tags, you won't see the robot in Gazebo.
-    xacro_file = os.path.join(package_path, 'urdf', 'my_robotarm_gazebo_no_controllers.xacro')
+    xacro_file = os.path.join(package_path, 'urdf', 'my_robotarm_gazebo.xacro')
     doc = xacro.parse(open(xacro_file))
     xacro.process_doc(doc)
     my_robotarm_description = doc.toxml()
@@ -28,14 +28,15 @@ def generate_launch_description():
         parameters=[params]
     )
 
-    # This robot has no sensors, so Gazebo's stock empty.sdf is enough.
-    # A camera or a lidar would need a world that loads gz-sim-sensors-system,
-    # which empty.sdf does not - see worlds/my_world.sdf for that.
+    # We need a world map to run most of the sensor plug-ins in Gazebo.
+    # Feel free to change it to another world and see how the simulation will change!
+    world_file = os.path.join(package_path, 'worlds', 'my_world.sdf')
+
     gazebo_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ),
-        launch_arguments={'gz_args': '-r empty.sdf'}.items()
+        launch_arguments={'gz_args': '-r ' + world_file}.items()
     )
 
     node_spawn_entity = Node(
@@ -52,12 +53,12 @@ def generate_launch_description():
     node_ros_gz_bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        # Makes Gazebo's clock and joint states available to ROS.
-        # Without ros2_control, this bridge is the ONLY source of /joint_states:
-        # they come from the JointStatePublisher plugin inside the XACRO.
+        # The arguments are to make the entities in the Gazebo GUI to be available to the ROS such as clock, joint states, camera etc.
         arguments=[
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
-            '/world/empty/model/two_dof_robot/joint_state@sensor_msgs/msg/JointState[gz.msgs.Model'
+            '/world/empty/model/two_dof_robot/joint_state@sensor_msgs/msg/JointState[gz.msgs.Model',
+            '/camera/image_raw@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo'
         ],
         remappings=[
             ('/world/empty/model/two_dof_robot/joint_state', '/joint_states')
@@ -80,11 +81,32 @@ def generate_launch_description():
         parameters=[params]
     )
 
+
+    node_joint_broadcaster = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster"],
+        output="screen",
+    )
+
+    # This is the node allows you to control your robot arm.
+    # If you compare this launch file with the previous one
+    # we had the joint state publisher instead. They two don't go together.
+    # Only one node to control the robot is sufficien/required/safe.
+    node_arm_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["arm_controller"],
+        output="screen",
+    )
+
     return LaunchDescription([
         node_robot_state_publisher,
         gazebo_sim,
         node_spawn_entity,
         node_ros_gz_bridge,
         node_tf,
-        node_rviz
+        node_rviz,
+        node_joint_broadcaster,
+        node_arm_controller
     ])
