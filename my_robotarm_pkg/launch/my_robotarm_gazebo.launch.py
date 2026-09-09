@@ -14,7 +14,7 @@ def generate_launch_description():
     package_path = get_package_share_directory(package_name)
 
     # This is our robot. If you change the xacro file to another one without inertia and collision tags, you won't see the robot in Gazebo.
-    xacro_file = os.path.join(package_path, 'urdf', 'my_robotarm_gazebo_no_controllers.xacro')
+    xacro_file = os.path.join(package_path, 'urdf', 'my_robotarm_gazebo.xacro')
     doc = xacro.parse(open(xacro_file))
     xacro.process_doc(doc)
     my_robotarm_description = doc.toxml()
@@ -28,9 +28,6 @@ def generate_launch_description():
         parameters=[params]
     )
 
-    # This robot has no sensors, so Gazebo's stock empty.sdf is enough.
-    # A camera or a lidar would need a world that loads gz-sim-sensors-system,
-    # which empty.sdf does not - see worlds/my_world.sdf for that.
     gazebo_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
