@@ -46,6 +46,10 @@
         <update_rate>30</update_rate>
         <visualize>true</visualize>
         <topic>camera/image_raw</topic>
+        <!-- URDF->SDF lumps the fixed camera joint into base_link, so the
+             default frame_id would be "two_dof_robot::base_link::camera",
+             which matches no TF frame. Force it to the URDF link name. -->
+        <gz_frame_id>camera_link</gz_frame_id>
         
         <camera>
           <camera_info_topic>camera/camera_info</camera_info_topic>

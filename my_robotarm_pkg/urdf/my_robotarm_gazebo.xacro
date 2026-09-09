@@ -21,7 +21,14 @@
 
   <!-- ==================== Links ==================== -->
 
-  <!-- Base Link (Fixed: Added inertial block so Gazebo keeps it) -->
+  <link name="world"/>
+
+  <joint name="world_to_base" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  
   <link name="base_link">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -221,13 +228,9 @@
     </plugin>
   </gazebo>
 
-  <xacro:camera_sensor 
-    parent_link="base_link" 
-    x="0.005" 
-    y="0.0" 
-    z="0.05" 
-    roll="0" 
-    pitch="0" 
-    yaw="0" />
+  <xacro:camera_sensor
+  parent_link="base_link"
+  x="0.20" y="0.0" z="0.25"
+  roll="0" pitch="0.5" yaw="3.14159" />
 
 </robot>

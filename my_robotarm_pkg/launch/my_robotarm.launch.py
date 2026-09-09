@@ -11,15 +11,14 @@ def generate_launch_description():
 
     package_name = 'my_robotarm_pkg'
 
-    package_path = os.path.join(
-        get_package_share_directory(package_name))
-    xacro_file = os.path.join(package_path,
-                              'urdf/',
-                              'my_robotarm_with_ee.xacro')
-    
+    package_path = get_package_share_directory(package_name)
+
+    # This is our robot. If you change the the one with or without the end-effector.
+    xacro_file = os.path.join(package_path, 'urdf', 'my_robotarm_with_ee.xacro')
     doc = xacro.parse(open(xacro_file))
     xacro.process_doc(doc)
     my_robotarm_description = doc.toxml()
+
     params = {'robot_description': my_robotarm_description, 'use_sim_time': True}
 
     node_robot_state_publisher = Node(
@@ -37,7 +36,7 @@ def generate_launch_description():
 
     node_tf = Node(package = "tf2_ros", 
                        executable = "static_transform_publisher",
-                       arguments = ["0", "0", "0", "0", "0", "0", "map", "base_link"])
+                       arguments = ["--frame-id", "world", "--child-frame-id", "base_link"])
 
     node_rviz = Node(
         package='rviz2',

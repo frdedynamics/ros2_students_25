@@ -12,27 +12,31 @@ def generate_launch_description():
     package_name = 'my_robotarm_pkg'
 
     package_path = get_package_share_directory(package_name)
+
+    # This is our robot. If you change the xacro file to another one without inertia and collision tags, you won't see the robot in Gazebo.
     xacro_file = os.path.join(package_path, 'urdf', 'my_robotarm_gazebo.xacro')
-    
     doc = xacro.parse(open(xacro_file))
     xacro.process_doc(doc)
     my_robotarm_description = doc.toxml()
     
-    sim_time_param = {'use_sim_time': True}
+    params = {'robot_description': my_robotarm_description, 'use_sim_time': True}
 
     node_robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         output='screen',
-        parameters=[{'robot_description': my_robotarm_description, 'use_sim_time': True}]
+        parameters=[params]
     )
 
-    # We removed node_joint_state_publisher_gui and put these three code blocks related to Gazebo now.
+    # We need a world map to run most of the sensor plug-ins in Gazebo.
+    # Feel free to change it to another world and see how the simulation will change!
+    world_file = os.path.join(package_path, 'worlds', 'my_world.sdf')
+
     gazebo_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ),
-        launch_arguments={'gz_args': '-r empty.sdf'}.items()
+        launch_arguments={'gz_args': '-r ' + world_file}.items()
     )
 
     node_spawn_entity = Node(
@@ -65,8 +69,8 @@ def generate_launch_description():
     node_tf = Node(
         package="tf2_ros", 
         executable="static_transform_publisher",
-        arguments=["0", "0", "0", "0", "0", "0", "map", "base_link"],
-        parameters=[sim_time_param]
+        arguments=["--frame-id", "world", "--child-frame-id", "base_link"],
+        parameters=[params]
     )
 
     node_rviz = Node(
@@ -74,10 +78,10 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         arguments=['-d' + os.path.join(get_package_share_directory(package_name), 'config', 'config.rviz')],
-        parameters=[sim_time_param]
+        parameters=[params]
     )
 
-    # 1. Joint State Broadcaster Node
+
     node_joint_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
@@ -85,7 +89,10 @@ def generate_launch_description():
         output="screen",
     )
 
-    # 2. Arm Controller Node
+    # This is the node allows you to control your robot arm.
+    # If you compare this launch file with the previous one
+    # we had the joint state publisher instead. They two don't go together.
+    # Only one node to control the robot is sufficien/required/safe.
     node_arm_controller = Node(
         package="controller_manager",
         executable="spawner",
