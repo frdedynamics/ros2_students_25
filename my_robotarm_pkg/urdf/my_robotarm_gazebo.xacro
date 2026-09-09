@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="two_dof_robot">
+<xacro:include filename="$(find my_robotarm_pkg)/urdf/camera.xacro" />
 
   <!-- ==================== Global Material Definitions ==================== -->
   <material name="dark_grey">
@@ -219,5 +220,14 @@
       <parameters>$(find my_robotarm_pkg)/config/controllers.yaml</parameters>
     </plugin>
   </gazebo>
+
+  <xacro:camera_sensor 
+    parent_link="base_link" 
+    x="0.005" 
+    y="0.0" 
+    z="0.05" 
+    roll="0" 
+    pitch="0" 
+    yaw="0" />
 
 </robot>
