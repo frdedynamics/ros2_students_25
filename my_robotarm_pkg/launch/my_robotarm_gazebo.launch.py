@@ -28,11 +28,13 @@ def generate_launch_description():
         parameters=[params]
     )
 
+    world_file = os.path.join(package_path, 'worlds', 'my_world.sdf')
+
     gazebo_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ),
-        launch_arguments={'gz_args': '-r empty.sdf'}.items()
+        launch_arguments={'gz_args': '-r ' + world_file}.items()
     )
 
     node_spawn_entity = Node(
@@ -54,7 +56,9 @@ def generate_launch_description():
         # they come from the JointStatePublisher plugin inside the XACRO.
         arguments=[
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
-            '/world/empty/model/two_dof_robot/joint_state@sensor_msgs/msg/JointState[gz.msgs.Model'
+            '/world/empty/model/two_dof_robot/joint_state@sensor_msgs/msg/JointState[gz.msgs.Model',
+            '/camera/image_raw@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo'
         ],
         remappings=[
             ('/world/empty/model/two_dof_robot/joint_state', '/joint_states')
@@ -77,11 +81,29 @@ def generate_launch_description():
         parameters=[params]
     )
 
+    # 1. Joint State Broadcaster Node
+    node_joint_broadcaster = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster"],
+        output="screen",
+    )
+
+    # 2. Arm Controller Node
+    node_arm_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["arm_controller"],
+        output="screen",
+    )
+
     return LaunchDescription([
         node_robot_state_publisher,
         gazebo_sim,
         node_spawn_entity,
         node_ros_gz_bridge,
         node_tf,
-        node_rviz
+        node_rviz,
+        node_joint_broadcaster,
+        node_arm_controller
     ])

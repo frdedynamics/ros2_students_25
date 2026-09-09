@@ -1,12 +1,4 @@
 <?xml version="1.0" ?>
-<!--
-  Copy of Gazebo's stock empty.sdf, plus the Sensors system.
-
-  The world name is deliberately kept as "empty" so that the existing
-  /world/empty/model/two_dof_robot/joint_state topic (see the
-  JointStatePublisher plugin in my_robotarm_gazebo.xacro and the
-  ros_gz_bridge arguments in my_robotarm_gazebo.launch.py) stays valid.
--->
 <sdf version="1.6">
   <world name="empty">
     <physics name="1ms" type="ignored">
@@ -29,10 +21,6 @@
       filename="gz-sim-contact-system"
       name="gz::sim::systems::Contact">
     </plugin>
-
-    <!-- Required for any camera/lidar/depth sensor to actually render and
-         publish. empty.sdf does NOT load this, which is why the camera
-         produced no topics. -->
     <plugin
       filename="gz-sim-sensors-system"
       name="gz::sim::systems::Sensors">
@@ -79,7 +67,6 @@
         </visual>
       </link>
     </model>
-
 
   </world>
 </sdf>

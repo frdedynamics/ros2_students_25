@@ -14,7 +14,7 @@ def generate_launch_description():
     package_path = get_package_share_directory(package_name)
 
     # This is our robot. If you change the the one with or without the end-effector.
-    xacro_file = os.path.join(package_path, 'urdf', 'my_robotarm_with_ee.xacro')
+    xacro_file = os.path.join(package_path, 'urdf', 'my_robotarm_simple.xacro')
     doc = xacro.parse(open(xacro_file))
     xacro.process_doc(doc)
     my_robotarm_description = doc.toxml()

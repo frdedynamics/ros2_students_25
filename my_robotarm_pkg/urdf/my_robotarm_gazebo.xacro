@@ -1,5 +1,39 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="two_dof_robot">
+<xacro:include filename="$(find my_robotarm_pkg)/urdf/camera.xacro" />
+
+
+<!-- ROS 2 Control Hardware Interface -->
+  <ros2_control name="GazeboSimSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+
+    <joint name="joint1">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="joint2">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_finger_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+  <!-- Gazebo ROS 2 Control Plugin -->
+  <gazebo>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(find my_robotarm_pkg)/config/controllers.yaml</parameters>
+    </plugin>
+  </gazebo>
 
   <!-- ==================== Global Material Definitions ==================== -->
   <material name="dark_grey">
@@ -194,5 +228,10 @@
       <topic>/world/empty/model/two_dof_robot/joint_state</topic>
     </plugin>
   </gazebo>
+
+  <xacro:camera_sensor
+  parent_link="base_link"
+  x="0.20" y="0.0" z="0.25"
+  roll="0" pitch="0.5" yaw="3.14159" />
 
 </robot>
