@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+
+<robot name="xacro_macros" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:property name="pla_density" value="600" />
+    <xacro:property name="aluminium_density" value="2700" />
+
+    <material name="blue">
+        <color rgba="0 0 0.8 0.8"/>
+    </material>
+
+    <material name="green">
+        <color rgba="0 ${145/255} ${29/255} 0.8"/>
+    </material>
+
+    <material name="orange">
+        <color rgba="${255/255} ${165/255} 0.0 0.8"/>
+    </material>
+
+    <material name="silver">
+        <color rgba="${169/255} ${172/255} ${182/255} 1.0"/>
+    </material>
+
+    <material name="black">
+        <color rgba="${0/255} ${0/255} ${0/255} 1.0"/>
+    </material>
+
+
+</robot>

@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+
+<robot name="robot_stand" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find custom_robot_sim)/urdf/robot_description_no_dummy.urdf.xacro" />
+
+    <link name="base_footprint"/>
+
+    <joint name="footprint_joint" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="robot_stand_base_link" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="robot_stand_base_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="2.0 2.0 0.02"/>
+            </geometry>
+            <material name="silver" />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="2.0 2.0 0.02"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_box length="2.0" width="2.0" height="0.02" density="2700">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <joint name="robot_stand_base_joint" type="fixed">
+        <parent link="robot_stand_base_link"/>
+        <child link="robot_stand_link" />
+        <origin xyz="0 0 0.37" rpy="0 0 0"/>
+    </joint>
+
+    <link name="robot_stand_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.7"/>
+            </geometry>
+            <material name="silver" />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.7"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_box length="0.25" width="0.25" height="0.7" density="2700">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    
+
+    <joint name="robot_base_attachment" type="fixed">
+        <parent link="robot_stand_link"/>
+        <child link="arm_base_plate" />
+        <origin xyz="0 0 0.35" rpy="0 0 0"/>
+    </joint>
+
+</robot>
