@@ -31,6 +31,10 @@ setup(
             'collision_server = communication_patterns.collision_server:main',
             'robot_footprint_server = communication_patterns.robot_footprint_server:main',
             'robot_footprint_client = communication_patterns.robot_footprint_client:main',
+            'coffee_server = communication_patterns.coffee_server:main',
+            'coffee_client = communication_patterns.coffee_client:main',
+            'navigation_server = communication_patterns.navigation_server:main',
+            'navigation_client = communication_patterns.navigation_client:main',
         ],
     },
 )
