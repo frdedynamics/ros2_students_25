@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.6" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="$(find custom_robot_sim)/models/inertial_macros.xacro.sdf" />
+    <xacro:include filename="$(find custom_robot_sim)/models/materials.xacro.sdf" />
+
+
+    <xacro:macro name="table_leg" params="link_name x y z">
+        <link name="${link_name}">
+            <visual name="${link_name}_vis">
+                <pose>${x} ${y} ${z} 0 0 0</pose>
+                <geometry>
+                    <cylinder>
+                        <length>0.68</length>
+                        <radius>0.02</radius>
+                    </cylinder>
+                </geometry>
+                <!-- <material name="material_silver" /> -->
+                <xacro:material_silver/>
+            </visual>
+            <collision name="${link_name}_col">
+                <pose>${x} ${y} ${z} 0 0 0</pose>
+                <geometry>
+                    <cylinder>
+                        <length>0.68</length>
+                        <radius>0.02</radius>
+                    </cylinder>
+                </geometry>
+            </collision>
+            <xacro:inertial_cylinder length="0.68" radius="0.02" density="${aluminium_density}">
+                <pose>${x} ${y} ${z} 0 0 0</pose>
+            </xacro:inertial_cylinder>
+        </link>
+    </xacro:macro>
+
+    <xacro:property name="tabletop_z_offset" value="${0.68/2}" />
+    <xacro:property name="tabletop_x_offset" value="${0.7/2-0.04}" />
+    <xacro:property name="tabletop_y_offset" value="${tabletop_x_offset}" />
+
+    <link name="tabletop_link">
+        <visual name="tabletop_vis">
+            <pose>0 0 0.0 0 0 0</pose>
+            <geometry>
+                <box>
+                    <size>0.7 0.7 0.02</size>
+                </box>
+            </geometry>
+            <xacro:material_black/>
+        </visual>
+        <collision name="tabletop_col">
+            <pose>0 0 0.0 0 0 0</pose>
+            <geometry>
+                <box>
+                    <size>0.7 0.7 0.02</size>
+                </box>
+            </geometry>
+        </collision>
+        <xacro:inertial_box length="0.7" width="0.7" height="0.02" density="${aluminium_density}">
+            <pose>0 0 0 0 0 0</pose>
+        </xacro:inertial_box>
+    </link>
+
+    <joint name="leg_1_joint" type="fixed">
+        <parent>tabletop_link</parent>
+        <child>leg_1_link</child>
+    </joint>
+
+    <xacro:table_leg link_name="leg_1_link" x="${tabletop_x_offset}" y="${tabletop_y_offset}" z="-${tabletop_z_offset}"/>
+
+    <joint name="leg_2_joint" type="fixed">
+        <parent>tabletop_link</parent>
+        <child>leg_2_link</child>
+    </joint>
+
+    <xacro:table_leg link_name="leg_2_link" x="-${tabletop_x_offset}" y="${tabletop_y_offset}" z="-${tabletop_z_offset}"/>
+
+    <joint name="leg_3_joint" type="fixed">
+        <parent>tabletop_link</parent>
+        <child>leg_3_link</child>
+    </joint>
+
+    <xacro:table_leg link_name="leg_3_link" x="-${tabletop_x_offset}" y="-${tabletop_y_offset}" z="-${tabletop_z_offset}"/>
+
+    <joint name="leg_4_joint" type="fixed">
+        <parent>tabletop_link</parent>
+        <child>leg_4_link</child>
+    </joint>
+
+    <xacro:table_leg link_name="leg_4_link" x="${tabletop_x_offset}" y="-${tabletop_y_offset}" z="-${tabletop_z_offset}"/>
+
+</sdf>

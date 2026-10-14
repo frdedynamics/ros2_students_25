@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.6" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="inertial_box" params="length width height density:=1 *pose_inertial">
+        <xacro:property name="mass" value="${length*height*width*density}" />
+        <inertial>
+            <xacro:insert_block name="pose_inertial" />
+            <mass>${mass}</mass>
+            <inertia>
+                <ixx>${mass*(pow(height,2) + pow(width,2))/12}</ixx>
+                <ixy>0.0</ixy>
+                <ixz>0.0</ixz>
+                <iyy>${mass*(pow(length,2) + pow(height,2))/12}</iyy>
+                <iyz>0.0</iyz>
+                <izz>${mass*(pow(length,2) + pow(width,2))/12}</izz>
+            </inertia>
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="inertial_cylinder" params="radius length density:=1 *pose_inertial">
+        <xacro:property name="mass" value="${pi*length*pow(radius,2)*density}" />
+        <inertial>
+            <xacro:insert_block name="pose_inertial" />
+            <mass>${mass}</mass>
+            <inertia>
+                <ixx>${mass*(3*pow(radius,2)+pow(length,2))/12}</ixx>
+                <ixy>0.0</ixy>
+                <ixz>0.0</ixz>
+                <iyy>${mass*(3*pow(radius,2)+pow(length,2))/12}</iyy>
+                <iyz>0.0</iyz>
+                <izz>${mass*pow(radius,2)/2}</izz>
+            </inertia>
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="inertial_sphere" params="radius density:=1 *pose_inertial">
+        <xacro:property name="mass" value="${(4/3)*pi*pow(radius,3)}" />
+        <inertial>
+            <xacro:insert_block name="pose_inertial" />
+            <mass>${mass}</mass>
+            <inertia>
+                <ixx>${2*mass*pow(radius,2)/5}</ixx>
+                <ixy>0.0</ixy>
+                <ixz>0.0</ixz>
+                <iyy>${2*mass*pow(radius,2)/5}</iyy>
+                <iyz>0.0</iyz>
+                <izz>${2*mass*pow(radius,2)/5}</izz>
+            </inertia>
+        </inertial>
+    </xacro:macro >
+
+</sdf>

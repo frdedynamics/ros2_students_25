@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+
+<robot name="cube" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find custom_robot_sim)/urdf/inertial_macros.urdf.xacro" />
+    <xacro:include filename="$(find custom_robot_sim)/urdf/materials.urdf.xacro" />
+
+    <xacro:property name="size" value="0.05" />
+
+    <link name="cube_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${size} ${size} ${size}"/>
+            </geometry>
+            <material name="green"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${size} ${size} ${size}"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_box length="${size}" width="${size}" height="${size}" density="${pla_density}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+</robot>

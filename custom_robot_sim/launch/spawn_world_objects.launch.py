@@ -55,18 +55,18 @@ def generate_launch_description():
     )
 
     gz_spawn_table_1 = Node(
-            package='ros_gz_sim',
-            executable='create',
-            output='screen',
-            parameters=[{
-                'string': table_description,
-                'name': 'table_1',
-                'allow_renaming': True,
-                'x': 0.0,
-                'y': 0.6,
-                'z': 1.0,
-            }],
-        )
+        package='ros_gz_sim',
+        executable='create',
+        output='screen',
+        parameters=[{
+            'string': table_description,
+            'name': 'table_1',
+            'allow_renaming': True,
+            'x': 0.0,
+            'y': 0.6,
+            'z': 1.0,
+        }],
+    )
 
     gz_spawn_table_2 = Node(
         package='ros_gz_sim',

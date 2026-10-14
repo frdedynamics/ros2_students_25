@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+
+<robot name="table" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find custom_robot_sim)/urdf/inertial_macros.urdf.xacro" />
+    <xacro:include filename="$(find custom_robot_sim)/urdf/materials.urdf.xacro" />
+
+    <xacro:macro name="table_leg" params="link_name">
+        <link name="${link_name}">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder length="0.68" radius="0.02" />
+                </geometry>
+                <material name="silver" />
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder length="0.68" radius="0.02" />
+                </geometry>
+            </collision>
+            <xacro:inertial_cylinder length="0.68" radius="0.02" density="${aluminium_density}">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:inertial_cylinder>
+        </link>
+    </xacro:macro>
+
+    <xacro:property name="tabletop_z_offset" value="${0.68/2}" />
+    <xacro:property name="tabletop_x_offset" value="${0.7/2-0.04}" />
+    <xacro:property name="tabletop_y_offset" value="${tabletop_x_offset}" />
+
+    <link name="tabletop_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.7 0.7 0.02"/>
+            </geometry>
+            <material name="black" />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.7 0.7 0.02"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_box length="0.7" width="0.7" height="0.02" density="${aluminium_density}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <joint name="leg_1_joint" type="fixed">
+        <parent link="tabletop_link"/>
+        <child link="leg_1_link" />
+        <origin xyz="${tabletop_x_offset} ${tabletop_y_offset} -${tabletop_z_offset}" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:table_leg link_name="leg_1_link"/>
+
+    <joint name="leg_2_joint" type="fixed">
+        <parent link="tabletop_link"/>
+        <child link="leg_2_link" />
+        <origin xyz="-${tabletop_x_offset} ${tabletop_y_offset} -${tabletop_z_offset}" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:table_leg link_name="leg_2_link"/>
+
+    <joint name="leg_3_joint" type="fixed">
+        <parent link="tabletop_link"/>
+        <child link="leg_3_link" />
+        <origin xyz="-${tabletop_x_offset} -${tabletop_y_offset} -${tabletop_z_offset}" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:table_leg link_name="leg_3_link"/>
+
+    <joint name="leg_4_joint" type="fixed">
+        <parent link="tabletop_link"/>
+        <child link="leg_4_link" />
+        <origin xyz="${tabletop_x_offset} -${tabletop_y_offset} -${tabletop_z_offset}" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:table_leg link_name="leg_4_link"/>
+
+</robot>

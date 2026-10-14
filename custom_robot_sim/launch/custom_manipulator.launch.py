@@ -15,7 +15,7 @@ def generate_launch_description():
     package_path = get_package_share_directory(package_name)
 
     # Compile the URDF Xacro description of the robot into pure XML.
-    xacro_file = os.path.join(package_path, 'urdf', 'robot_description.urdf.xacro')
+    xacro_file = os.path.join(package_path, 'urdf', 'robot_stand.urdf.xacro')
     doc = xacro.parse(open(xacro_file))
     xacro.process_doc(doc)
     my_robotarm_description = doc.toxml()
@@ -78,11 +78,19 @@ def generate_launch_description():
         output="screen",
     )
 
+    node_forward_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["forward_controller"],
+        output="screen",
+    )
+
     return LaunchDescription([
         node_robot_state_publisher,
         gazebo_sim,
         node_spawn_entity,
         node_ros_gz_bridge,
         node_joint_broadcaster,
-        node_arm_controller
+        node_arm_controller,
+        # node_forward_controller
     ])

@@ -1,0 +1,86 @@
+<?xml version="1.0" ?>
+
+<robot name="box" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find custom_robot_sim)/urdf/inertial_macros.urdf.xacro" />
+    <xacro:include filename="$(find custom_robot_sim)/urdf/materials.urdf.xacro" />
+
+    <xacro:property name="wall_length" value="0.105" />
+    <xacro:property name="wall_width" value="0.005" />
+    <xacro:property name="wall_height" value="0.075" />
+    <xacro:property name="wall_z_offset" value="${wall_height/2}" />
+    <xacro:property name="wall_x_offset" value="${0.0025}" />
+    <xacro:property name="wall_y_offset" value="${0.100/2 + 0.0025}" />
+
+    <xacro:macro name="box_wall" params="link_name">
+        <link name="${link_name}">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="${wall_length} ${wall_width} ${wall_height}"/>
+                </geometry>
+                <material name="orange"/>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="${wall_length} ${wall_width} ${wall_height}"/>
+                </geometry>
+            </collision>
+            <xacro:inertial_box length="${wall_length}" width="${wall_width}" height="${wall_height}" density="${pla_density}">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:inertial_box>
+        </link>
+    </xacro:macro>
+
+    <link name="box_base_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.1 0.1 0.005"/>
+            </geometry>
+            <material name="orange"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.1 0.1 0.005"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_box length="0.1" width="0.1" height="0.005" density="${pla_density}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <joint name="wall_1_joint" type="fixed">
+        <parent link="box_base_link"/>
+        <child link="wall_1_link" />
+        <origin xyz="${wall_x_offset} ${wall_y_offset} ${wall_z_offset}" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:box_wall link_name="wall_1_link"/>
+
+    <joint name="wall_2_joint" type="fixed">
+        <parent link="box_base_link"/>
+        <child link="wall_2_link" />
+        <origin xyz="${wall_y_offset} -${wall_x_offset} ${wall_z_offset}" rpy="0 0 ${pi/2}"/>
+    </joint>
+
+    <xacro:box_wall link_name="wall_2_link"/>
+
+    <joint name="wall_3_joint" type="fixed">
+        <parent link="box_base_link"/>
+        <child link="wall_3_link" />
+        <origin xyz="-${wall_x_offset} -${wall_y_offset} ${wall_z_offset}" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:box_wall link_name="wall_3_link"/>
+
+    <joint name="wall_4_joint" type="fixed">
+        <parent link="box_base_link"/>
+        <child link="wall_4_link" />
+        <origin xyz="-${wall_y_offset} ${wall_x_offset} ${wall_z_offset}" rpy="0 0 ${pi/2}"/>
+    </joint>
+
+    <xacro:box_wall link_name="wall_4_link"/>
+
+</robot>

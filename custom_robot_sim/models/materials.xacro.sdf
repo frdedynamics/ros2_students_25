@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.6" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:property name="pla_density" value="600" />
+    <xacro:property name="aluminium_density" value="2700" />
+
+    <xacro:macro name="material_black">
+        <material>
+            <ambient>0.05 0.05 0.05 1</ambient>
+            <diffuse>0.05 0.05 0.05 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <emissive>0.0 0.0 0.0 1</emissive>
+        </material>
+    </xacro:macro>
+
+    <xacro:macro name="material_silver">
+        <material>
+            <ambient>0.8 0.8 0.8 1.0</ambient>
+            <diffuse>0.75 0.75 0.75 1.0</diffuse>
+            <specular>0.5 0.5 0.5 1.0</specular>
+            <emissive>0.0 0.0 0.0 1.0</emissive>
+        </material>
+    </xacro:macro>
+
+    <xacro:macro name="material_green">
+        <material>
+            <ambient>0.2 0.8 0.2 1.0</ambient>
+            <diffuse>0.4 0.9 0.4 1.0</diffuse>
+            <specular>0.1 0.1 0.1 1.0</specular>
+            <emissive>0.0 0.0 0.0 1.0</emissive>
+        </material>
+    </xacro:macro>
+
+    <xacro:macro name="material_orange">
+        <material>
+            <ambient>1.0 0.5 0.0 0.8</ambient>
+            <diffuse>1.0 0.5 0.0 0.8</diffuse>
+            <specular>0.5 0.5 0.5 0.8</specular>
+            <emissive>0.0 0.0 0.0 1.0</emissive>
+        </material>
+    </xacro:macro>
+</sdf>
